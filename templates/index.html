@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resume Matcher</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Resume ATS Matcher</h1>
+        <form action="/" method="post" enctype="multipart/form-data">
+            <label class="upload-label">Upload Your Resume (PDF)</label>
+            <input type="file" name="resume" id="resumeInput" accept="application/pdf" required>
+            <p id="fileName" class="file-preview">No file selected</p>
+
+            <textarea name="job_desc" rows="6" placeholder="Paste the Job Description here..." required></textarea>
+
+            <div class="button-group">
+                <button type="submit">Check Match 🔍</button>
+                <button type="button" id="Refreshbtn">Refresh 🔄</button>
+            </div>
+        </form>
+
+        {% if score is not none %}
+            <h3 id="scoreText">✅ Match Score: {{ score }}%</h3>
+        {% endif %}
+    </div>
+
+    <script>
+        document.getElementById('resumeInput').addEventListener('change', function () {
+            const file = this.files[0];
+            const fileNameDisplay = document.getElementById('fileName');
+            fileNameDisplay.textContent = file ? `📄 Selected file: ${file.name}` : 'No file selected';
+        });
+
+        document.getElementById('Refreshbtn').addEventListener('click', function () {
+            document.querySelector("form").reset();
+            document.getElementById("fileName").textContent = "No file selected";
+            const scoreText = document.getElementById("scoreText");
+            if (scoreText) scoreText.style.display = "none";
+        });
+    </script>
+</body>
+</html>
